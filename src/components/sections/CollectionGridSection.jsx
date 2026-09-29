@@ -1,27 +1,65 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import { Link } from 'react-router-dom';
+import brands from '../../data/brands';
 
-const products = [
-  { name: "AURUM NOIR", size: "50ml", price: "₹4,200", image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=600&auto=format&fit=crop" },
-  { name: "AURUM BLANC", size: "30ml", price: "₹3,100", image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?q=80&w=600&auto=format&fit=crop" },
-  { name: "AURUM ÉTÉ", size: "100ml", price: "₹6,800", image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=600&auto=format&fit=crop" }
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function CollectionGridSection() {
   const gridRef = useRef(null);
+  const headerRef = useRef(null);
 
   useEffect(() => {
-    const cards = gridRef.current.querySelectorAll('.product-card');
-    gsap.fromTo(cards,
-      { scale: 0.9, opacity: 0 },
+    // Animate the header
+    gsap.fromTo(headerRef.current,
+      { opacity: 0, y: 40 },
       {
-        scale: 1, opacity: 1,
-        stagger: 0.15,
+        opacity: 1, y: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: "top 85%",
+        }
+      }
+    );
+
+    // Stagger animate cards with a premium reveal
+    const cards = gridRef.current.querySelectorAll('.brand-card');
+    gsap.fromTo(cards,
+      { 
+        y: 80, 
+        opacity: 0,
+        filter: 'blur(6px)'
+      },
+      {
+        y: 0,
+        opacity: 1,
+        filter: 'blur(0px)',
+        stagger: {
+          each: 0.08,
+          from: "start"
+        },
         duration: 1,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: gridRef.current,
-          start: "top 75%",
+          start: "top 80%",
+        }
+      }
+    );
+
+    // Animate the golden line decoration
+    gsap.fromTo('.collection-line',
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        duration: 1.5,
+        ease: 'power3.inOut',
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: "top 80%",
         }
       }
     );
@@ -30,36 +68,66 @@ export default function CollectionGridSection() {
   return (
     <section className="w-full py-32 px-8 z-20 relative bg-background" id="collection">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-end mb-16">
-          <h2 className="font-display text-4xl md:text-6xl text-text-primary">The Collection</h2>
-          <span className="font-label text-gold-primary tracking-widest text-[10px] uppercase hidden md:block">Explore</span>
+        {/* Header */}
+        <div ref={headerRef} className="mb-20 text-center">
+          <span className="font-label text-gold-primary tracking-[0.3em] text-xs uppercase block mb-4">
+            Curated Houses
+          </span>
+          <h2 className="font-display text-5xl md:text-7xl text-text-primary mb-6">
+            The Collection
+          </h2>
+          <div className="collection-line w-24 h-px bg-gold-primary mx-auto origin-center" />
+          <p className="font-body text-text-muted text-lg mt-6 max-w-xl mx-auto leading-relaxed">
+            The world's most iconic fragrance houses, each with a legacy of artistry and elegance.
+          </p>
         </div>
 
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {products.map((product, idx) => (
-            <div key={idx} className="product-card group relative cursor-pointer block">
-              <div className="relative aspect-[3/4] overflow-hidden bg-[#111] mb-6">
+        {/* Grid */}
+        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+          {brands.map((brand, idx) => (
+            <Link 
+              to={`/collection/${brand.slug}`}
+              key={idx} 
+              className="brand-card group relative cursor-pointer block"
+            >
+              {/* Image Container */}
+              <div className="relative aspect-[3/4] overflow-hidden bg-[#111] mb-5 rounded-sm">
                 <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out grayscale group-hover:grayscale-0" 
+                  src={brand.image} 
+                  alt={brand.name} 
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[900ms] ease-out grayscale group-hover:grayscale-0" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 font-label text-[10px] text-gold-primary uppercase tracking-widest whitespace-nowrap">
-                  View Details
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-700" />
+                
+                {/* Flag badge */}
+                <div className="absolute top-4 right-4 text-lg opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                  {brand.flag}
                 </div>
-              </div>
-              <div className="flex justify-between items-baseline">
-                <div>
-                  <h3 className="font-body text-text-primary text-lg">{product.name}</h3>
-                  <p className="font-label text-text-muted text-[10px] uppercase tracking-widest mt-1">{product.size}</p>
+
+                {/* Bottom card info overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="font-display text-xl md:text-2xl text-white mb-1 tracking-wide">
+                    {brand.name}
+                  </h3>
+                  <div className="flex items-center justify-between">
+                    <p className="font-label text-[10px] text-white/50 uppercase tracking-widest">
+                      {brand.country}
+                    </p>
+                    <span className="font-body text-gold-primary text-xs italic opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                      {brand.signature}
+                    </span>
+                  </div>
                 </div>
-                <span className="font-body text-gold-primary">{product.price}</span>
+
+                {/* Hover border glow */}
+                <div className="absolute inset-0 border border-gold-primary/0 group-hover:border-gold-primary/30 transition-all duration-700 rounded-sm pointer-events-none" />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
     </section>
   );
 }
+

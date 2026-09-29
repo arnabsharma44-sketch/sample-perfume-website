@@ -1,72 +1,117 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function BrandStorySection() {
-  const bgRef = useRef(null);
-  const textRef = useRef(null);
-  const lineRef = useRef(null);
+  const sectionRef = useRef(null);
+  const videoWrapperRef = useRef(null);
+  const videoRef = useRef(null);
+  const leftTextRef = useRef(null);
+  const rightTextRef = useRef(null);
+  const pRef = useRef(null);
 
   useEffect(() => {
-    // Parallax background
-    gsap.to(bgRef.current, {
-      y: '20%',
-      ease: 'none',
+    // We create a ScrollTrigger timeline for the pinning and scaling effect
+    const tl = gsap.timeline({
       scrollTrigger: {
-        trigger: "#brand-story",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "+=150%", // Scroll distance
+        scrub: 1,
+        pin: true,
       }
     });
 
-    // Text clip-path reveal
-    const lines = textRef.current.querySelectorAll('span');
-    gsap.fromTo(lines,
-      { clipPath: 'inset(0 100% 0 0)' },
-      {
-        clipPath: 'inset(0 0% 0 0)',
-        stagger: 0.3,
-        duration: 1.5,
-        ease: 'power3.inOut',
-        scrollTrigger: {
-          trigger: textRef.current,
-          start: "top 70%",
-        }
-      }
-    );
+    // Use clip-path for a perfectly smooth, layout-independent reveal
+    // This keeps the video's crop consistent while expanding to full screen
+    const isMobile = window.innerWidth < 768;
+    const initialClip = isMobile 
+      ? "inset(25% 20% 25% 20% round 8px)" 
+      : "inset(20% 35% 20% 35% round 8px)";
 
-    // Line draw
-    gsap.fromTo(lineRef.current,
-      { scaleX: 0 },
-      {
-        scaleX: 1,
-        duration: 1.5,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: lineRef.current,
-          start: "top 90%",
-        }
-      }
-    );
+    tl.fromTo(videoWrapperRef.current, {
+      clipPath: initialClip,
+    }, {
+      clipPath: "inset(0% 0% 0% 0% round 0px)",
+      duration: 1,
+      ease: "power2.inOut"
+    }, 0);
+
+    // Add a premium un-zoom effect to the video itself
+    tl.fromTo(videoRef.current, {
+      scale: 1.3
+    }, {
+      scale: 1,
+      duration: 1,
+      ease: "power2.inOut"
+    }, 0);
+
+    // Fade out and move text horizontally towards the center
+    tl.to(leftTextRef.current, {
+      x: "15vw",
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.inOut"
+    }, 0);
+    
+    tl.to(rightTextRef.current, {
+      x: "-15vw",
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.inOut"
+    }, 0);
+
+    // Fade out the bottom paragraph
+    tl.to(pRef.current, {
+      opacity: 0,
+      y: 30,
+      duration: 0.5,
+      ease: "power2.in"
+    }, 0);
+
+    return () => {
+      // Cleanup scroll triggers on unmount
+      tl.scrollTrigger?.kill();
+    };
   }, []);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden z-20 flex flex-col justify-center items-center" id="brand-story">
-      {/* Abstract dark smoke background */}
-      <div 
-        ref={bgRef}
-        className="absolute inset-[-20%] w-[140%] h-[140%] bg-[url('https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-20 pointer-events-none origin-center"
-      />
-      
-      <div className="absolute inset-0 bg-background/80" />
+    <section ref={sectionRef} className="relative w-full h-screen bg-background text-text-primary z-20 overflow-hidden" id="brand-story">
+      <div className="absolute inset-0 flex items-center justify-center w-full h-full">
+        
+        {/* Large Text Container */}
+        <div className="absolute inset-0 flex items-center justify-between px-8 md:px-16 pointer-events-none z-30 w-full overflow-hidden mix-blend-difference">
+          <h1 ref={leftTextRef} className="font-display text-[10vw] leading-none whitespace-nowrap tracking-tight uppercase text-gold-primary">
+            WE CLOSE
+          </h1>
+          <h1 ref={rightTextRef} className="font-display text-[10vw] leading-none whitespace-nowrap tracking-tight uppercase text-right text-gold-primary">
+            THE GAP
+          </h1>
+        </div>
 
-      <h2 ref={textRef} className="relative z-10 font-display text-5xl md:text-8xl text-center text-text-primary leading-tight">
-        <span className="block opacity-70">Crafted in</span>
-        <span className="block opacity-90">small batches.</span>
-        <span className="block opacity-100">Never rushed.</span>
-      </h2>
+        {/* Video Container (FullScreen with Clip-Path) */}
+        <div ref={videoWrapperRef} className="absolute inset-0 z-20 w-full h-full overflow-hidden">
+          <video 
+            ref={videoRef}
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className="w-full h-full object-cover"
+            src="/perfume vdo/perfume vdos.mp4"
+          />
+          <div className="absolute inset-0 bg-background/10 mix-blend-overlay pointer-events-none" />
+        </div>
 
-      <div ref={lineRef} className="absolute bottom-24 w-px h-24 md:w-48 md:h-px bg-gold-primary origin-left md:origin-center" />
+        {/* Bottom Paragraph */}
+        <div ref={pRef} className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[90%] max-w-xl text-center z-30">
+          <p className="font-body text-text-muted text-sm md:text-base leading-relaxed tracking-wider">
+            Your scent is where people decide if you're unforgettable. We take what makes you irreplaceable, shape the entire essence around it, and make sure they feel that before a word is spoken.
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

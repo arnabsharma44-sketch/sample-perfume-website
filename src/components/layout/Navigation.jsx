@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -17,14 +18,14 @@ export default function Navigation() {
     <>
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-background/80 backdrop-blur-md py-4 border-b border-white/5' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
-          <div className="font-display text-2xl text-gold-primary tracking-widest">
+          <Link to="/" className="font-display text-2xl text-gold-primary tracking-widest">
             AURUM
-          </div>
+          </Link>
           
           <div className="hidden md:flex space-x-12">
-            <a href="#collection" className="font-label text-[10px] uppercase tracking-widest text-text-primary hover:text-gold-primary transition-colors">Collection</a>
-            <a href="#brand-story" className="font-label text-[10px] uppercase tracking-widest text-text-primary hover:text-gold-primary transition-colors">Story</a>
-            <a href="#footer" className="font-label text-[10px] uppercase tracking-widest text-text-primary hover:text-gold-primary transition-colors">Contact</a>
+            <Link to="/collection" className="font-label text-[10px] uppercase tracking-widest text-text-primary hover:text-gold-primary transition-colors">Collection</Link>
+            <Link to="/story" className="font-label text-[10px] uppercase tracking-widest text-text-primary hover:text-gold-primary transition-colors">Story</Link>
+            <Link to="/contact" className="font-label text-[10px] uppercase tracking-widest text-text-primary hover:text-gold-primary transition-colors">Contact</Link>
           </div>
 
           <button 
@@ -38,9 +39,9 @@ export default function Navigation() {
 
       {/* Mobile Menu Overlay */}
       <div className={`fixed inset-0 bg-background z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-700 ease-[cubic-bezier(0.77,0,0.175,1)] ${menuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-        <a href="#collection" onClick={() => setMenuOpen(false)} className="font-display text-4xl text-text-primary hover:text-gold-primary">Collection</a>
-        <a href="#brand-story" onClick={() => setMenuOpen(false)} className="font-display text-4xl text-text-primary hover:text-gold-primary">Story</a>
-        <a href="#footer" onClick={() => setMenuOpen(false)} className="font-display text-4xl text-text-primary hover:text-gold-primary">Contact</a>
+        <Link to="/collection" onClick={() => setMenuOpen(false)} className="font-display text-4xl text-text-primary hover:text-gold-primary">Collection</Link>
+        <Link to="/story" onClick={() => setMenuOpen(false)} className="font-display text-4xl text-text-primary hover:text-gold-primary">Story</Link>
+        <Link to="/contact" onClick={() => setMenuOpen(false)} className="font-display text-4xl text-text-primary hover:text-gold-primary">Contact</Link>
       </div>
     </>
   );

@@ -38,10 +38,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative w-full h-screen flex flex-col items-center justify-center z-20" id="hero">
-      {/* Top Left Label */}
-      <div className="absolute top-8 left-8 font-label text-[10px] text-gold-primary uppercase tracking-widest">
-        A U R U M
-      </div>
+
 
       {/* Main Titles */}
       <div className="text-center pointer-events-none mt-32 mix-blend-difference">
@@ -57,7 +54,7 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-12 right-12 flex flex-col items-center space-y-2 text-text-muted font-label text-[10px] uppercase tracking-widest">
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 text-text-muted font-label text-[10px] uppercase tracking-widest">
         <span>Scroll to begin</span>
         <div className="w-px h-12 bg-gradient-to-b from-text-muted to-transparent animate-pulse" />
       </div>

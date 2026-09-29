@@ -13,6 +13,9 @@ import ScentNotesSection from './components/sections/ScentNotesSection';
 import BrandStorySection from './components/sections/BrandStorySection';
 import CollectionGridSection from './components/sections/CollectionGridSection';
 import FooterSection from './components/sections/FooterSection';
+import ProductPage from './components/pages/ProductPage';
+
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +39,8 @@ class ErrorBoundary extends Component {
 }
 
 function App() {
+  const location = useLocation();
+
   useEffect(() => {
     // Scroll progress bar logic
     gsap.to('#progress-bar', {
@@ -49,6 +54,15 @@ function App() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
+    // Refresh ScrollTrigger after a short delay to account for rendering
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  }, [location.pathname]);
 
   return (
     <SmoothScroll>
@@ -69,12 +83,39 @@ function App() {
         
         {/* DOM content scrolls over the scene */}
         <div className="relative z-20 mix-blend-normal">
-          <HeroSection />
-          <ProductRevealSection />
-          <ScentNotesSection />
-          <BrandStorySection />
-          <CollectionGridSection />
-          <FooterSection />
+          <Routes>
+            <Route path="/" element={
+              <>
+                <HeroSection />
+                <ProductRevealSection />
+                <ScentNotesSection />
+                <FooterSection />
+              </>
+            } />
+            <Route path="/collection" element={
+              <div className="pt-20">
+                <CollectionGridSection />
+                <FooterSection />
+              </div>
+            } />
+            <Route path="/collection/:slug" element={
+              <>
+                <ProductPage />
+                <FooterSection />
+              </>
+            } />
+            <Route path="/story" element={
+              <div className="pt-20">
+                <BrandStorySection />
+                <FooterSection />
+              </div>
+            } />
+            <Route path="/contact" element={
+              <div className="pt-20">
+                <FooterSection />
+              </div>
+            } />
+          </Routes>
         </div>
       </main>
     </SmoothScroll>
