@@ -16,7 +16,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-background/80 backdrop-blur-md py-4 border-b border-white/5' : 'bg-transparent py-8'}`}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-background/90 backdrop-blur-lg py-4 border-b border-black/10 shadow-sm' : 'bg-background/50 backdrop-blur-md py-6 border-b border-black/5'}`}>
         <div className="max-w-7xl mx-auto px-8 flex justify-between items-center">
           <Link to="/" className="font-display text-2xl text-gold-primary tracking-widest">
             AURUM

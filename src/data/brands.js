@@ -9,7 +9,8 @@ const brands = [
     founder: "Coco Chanel",
     description: "Chanel is a Parisian fashion house founded in 1910 by Coco Chanel. The House of Chanel has become synonymous with luxury, elegance, and timeless style. Chanel N°5, created in 1921, remains the world's most iconic fragrance — a complex blend of aldehydes, ylang-ylang, and sandalwood that redefined modern perfumery.",
     notes: { top: "Aldehydes, Neroli, Ylang-Ylang", heart: "Rose, Jasmine, Iris", base: "Sandalwood, Vetiver, Vanilla" },
-    image: "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=600&auto=format&fit=crop"
+    image: "/logos for all/Publicité Chanel — Motion Design - Sophie Bittler.jpg",
+    storyVideo: "/chanel n5 vdo/chanel video.mp4"
   },
   { 
     name: "Dior", 
@@ -21,7 +22,7 @@ const brands = [
     founder: "Christian Dior",
     description: "Christian Dior founded his eponymous fashion house in 1946, revolutionizing post-war fashion with his 'New Look.' Dior Sauvage, inspired by wide-open spaces, is a bold and noble fragrance built around raw, fresh ingredients — a powerful juxtaposition of rugged masculinity and refined elegance.",
     notes: { top: "Bergamot, Pepper", heart: "Lavender, Star Anise, Nutmeg", base: "Ambroxan, Cedar, Labdanum" },
-    image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?q=80&w=600&auto=format&fit=crop",
+    image: "/logos for all/dior.jpg",
     storyVideo: "/dior vdo/Say age By Dior.mp4"
   },
   { 
@@ -34,7 +35,7 @@ const brands = [
     founder: "Guccio Gucci",
     description: "Founded in Florence in 1921, Gucci is one of the world's most prestigious luxury brands. Gucci Bloom captures the scent of a thriving garden brimming with life. A rich blend of natural tuberose, jasmine, and Rangoon creeper creates an unexpectedly bold white floral scent.",
     notes: { top: "Natural Tuberose", heart: "Jasmine Bud Extract", base: "Rangoon Creeper" },
-    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=600&auto=format&fit=crop"
+    image: "/logos for all/Un peu de noir un peu de blanc.jpg"
   },
   { 
     name: "Tom Ford", 

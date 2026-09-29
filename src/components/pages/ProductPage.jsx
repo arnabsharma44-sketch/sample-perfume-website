@@ -99,13 +99,13 @@ export default function ProductPage() {
     <div className="relative z-20 bg-background">
       {/* Hero Section */}
       <section ref={heroRef} className="relative w-full h-[80vh] overflow-hidden">
-        <div ref={imageRef} className="absolute inset-[-15%] w-[130%] h-[130%]">
+        <div ref={imageRef} className="absolute inset-x-0 -top-[15%] w-full h-[115%]">
           <img 
             src={brand.image} 
             alt={brand.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-background pointer-events-none" />
         </div>
 
         {/* Hero Content */}
@@ -125,16 +125,16 @@ export default function ProductPage() {
       {/* Brand Story Section */}
       <section className={`relative w-full py-24 md:py-32 px-8 md:px-16 ${brand.storyVideo ? 'text-white bg-black' : 'bg-background'}`}>
         {brand.storyVideo && (
-          <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center bg-black">
             <video 
               autoPlay 
               muted 
               loop 
               playsInline
-              className="w-full h-full object-cover opacity-60"
+              className="w-full h-full object-contain opacity-60"
               src={brand.storyVideo}
             />
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-black/60 pointer-events-none" />
           </div>
         )}
         
